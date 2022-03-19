@@ -16,13 +16,29 @@ public class StudentsController {
     private final StudentsService studentsService;
 
     @GetMapping
-    public List<Student> index() {
+    public List<Student> index(
+            @RequestParam(
+                    required = false,
+                    name = "orderBy"
+            ) Integer orderBy
+    ) {
+        System.out.println("orderBy: " + orderBy);
         return studentsService.index();
+    }
+
+    @GetMapping("/{id}")
+    public Student show(@PathVariable("id") Long id) {
+        return studentsService.show(id);
     }
 
     @PostMapping("/create")
     public Student create(@RequestBody Student student) {
         return studentsService.create(student);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public void delete(@PathVariable("id") Long id) {
+        studentsService.delete(id);
     }
 
 }

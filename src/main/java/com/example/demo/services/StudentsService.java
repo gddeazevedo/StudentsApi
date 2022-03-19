@@ -19,6 +19,10 @@ public class StudentsService {
         return repository.findAll();
     }
 
+    public Student show(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
+
     public Student create(Student student) {
         Optional<Student> fetchedStudent = repository.findByEmail(student.getEmail());
 
@@ -27,6 +31,16 @@ public class StudentsService {
         }
 
         return repository.save(student);
+    }
+
+    public void delete(Long id) {
+        boolean studentExists = repository.existsById(id);
+
+        if (!studentExists) {
+            throw new IllegalStateException("student with id " + id + " does not exist");
+        }
+
+        repository.deleteById(id);
     }
 
 }
