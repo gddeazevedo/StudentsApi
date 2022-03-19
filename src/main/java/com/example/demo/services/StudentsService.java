@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -17,4 +18,15 @@ public class StudentsService {
     public List<Student> index() {
         return repository.findAll();
     }
+
+    public Student create(Student student) {
+        Optional<Student> fetchedStudent = repository.findByEmail(student.getEmail());
+
+        if (fetchedStudent.isPresent()) {
+            throw new IllegalStateException("Email is taken");
+        }
+
+        return repository.save(student);
+    }
+
 }
