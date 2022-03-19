@@ -2,9 +2,13 @@ package com.example.demo.services;
 
 import com.example.demo.models.Student;
 import com.example.demo.repositories.StudentsRepository;
+
 import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +35,23 @@ public class StudentsService {
         }
 
         return repository.save(student);
+    }
+
+    @Transactional
+    public Student update(Long id, Student student) {
+        Optional<Student> fetchedStudent = repository.findById(id);
+
+        if (fetchedStudent.isEmpty()) {
+            throw new IllegalStateException("student with id " + id + " does not exist");
+        }
+
+        Student updatedStudent = fetchedStudent.get();
+
+        updatedStudent.setName(student.getName());
+        updatedStudent.setDob(student.getDob());
+        updatedStudent.setEmail(student.getEmail());
+
+        return updatedStudent;
     }
 
     public void delete(Long id) {

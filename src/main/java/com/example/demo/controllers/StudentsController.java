@@ -18,7 +18,7 @@ public class StudentsController {
     @GetMapping
     public List<Student> index(
             @RequestParam(
-                    required = false,
+                required = false,
                     name = "orderBy"
             ) Integer orderBy
     ) {
@@ -34,6 +34,14 @@ public class StudentsController {
     @PostMapping("/create")
     public Student create(@RequestBody Student student) {
         return studentsService.create(student);
+    }
+
+    @PutMapping("/{id}/update")
+    public Student update(
+            @PathVariable("id") Long id,
+            @RequestBody Student student
+    ) {
+        return studentsService.update(id, student);
     }
 
     @DeleteMapping("/{id}/delete")
